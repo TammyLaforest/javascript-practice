@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+	<!--<![endif]-->
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Todo App</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+			crossorigin="anonymous"
+		/>
+
+		<!-- <link rel="stylesheet" href="" /> -->
+		<style>
+			.spacey {
+				margin: 1em;
+			}
+			.page-title {
+				margin-top: 10px;
+				margin-left: 10px;
+			}
+			.btn,
+			.form-control {
+				margin-right: 10px;
+				margin-left: 10px;
+				display: inline-block;
+			}
+
+			body {
+				background-color: lightgrey;
+			}
+
+			#input {
+				width: 75%;
+				margin: 0 auto;
+				text-align: center;
+			}
+
+			h1 {
+				color: darkslategray;
+				text-align: center;
+			}
+
+			#task {
+				padding: 10px;
+				color: darkslategray;
+				border: 1px solid lightgray;
+				border-radius: 5px;
+			}
+
+			button {
+				padding: 10px;
+				border-radius: 3px;
+				color: darkslategrey;
+				font-weight: 550;
+				text-transform: uppercase;
+				font-size: 12px;
+			}
+
+			button#add {
+				background-color: lightseagreen;
+			}
+
+			button#clear {
+				background-color: #cc1133;
+			}
+
+			button.remove {
+				padding: 5px;
+				margin-left: 20px;
+				background-color: lightslategrey;
+				opacity: 0.5;
+			}
+
+			button.remove:hover {
+				background-color: lightseagreen;
+			}
+
+			ul {
+				width: 75%;
+				margin: 20px auto;
+				text-align: left;
+			}
+
+			li {
+				list-style-type: none;
+				/* color: white; */
+				font-weight: 600;
+				font-size: 1.3em;
+			}
+			.done {
+				margin: 5px;
+				color: orange;
+			}
+		</style>
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+			<p class="browsehappy">
+				You are using an <strong>outdated</strong> browser. Please
+				<a href="#">upgrade your browser</a> to improve your experience.
+			</p>
+		<![endif]-->
+		<div class="container">
+			<div class="row">
+				<div class="card">
+					<h1 class="page-title">TO-DO:</h1>
+					<div class="btn-group spacey" data-toggle="buttons">
+						<input
+							id="task"
+							type="text"
+							placeholder="todo: "
+							class="form-control"
+						/>
+						<button id="add" class="btn btn-outline-primary ">
+							ADD
+						</button>
+						<button class="btn btn-outline-secondary" id="clear">
+							CLEAR
+						</button>
+						<p id="error"></p>
+					</div>
+					<ul id="taskList"></ul>
+				</div>
+			</div>
+		</div>
+		<script src="todo.js" async defer></script>
+		<script>
+			let add = document.getElementById('add')
+			let clear = document.getElementById('clear')
+			let task = document.getElementById('task')
+			let taskList = document.getElementById('taskList')
+			let listItems = taskList.children
+			let error = document.getElementById('error')
+			let done = document.getElementsByClassName('remove')
+
+			add.addEventListener('click', function() {
+				let text = task.value
+
+				if (text == '') {
+					alert('please type something')
+				} else {
+					let newItem = document.createElement('li')
+					let taskText = document.createTextNode(text)
+
+					let removeButton = document.createElement('button')
+					removeButton.innerHTML = 'hey'
+					// let buttonText = document.createTextNode('done')
+					// doneButton.appendChild(buttonText)
+					removeButton.setAttribute('class', 'remove')
+
+					removeButton.addEventListener('click', function(e) {
+						let listItem = e.target.parentElement
+						listItem.style.textDecoration = 'line-through'
+						setTimeout(function() {
+							taskList.removeChild(listItem)
+						}, 500)
+					})
+
+					newItem.appendChild(taskText)
+					newItem.appendChild(removeButton)
+					taskList.appendChild(newItem)
+					task.value = ''
+					taskList.appendChild(newItem)
+				}
+			})
+
+			clear.addEventListener('click', function() {
+				task.value = ''
+			})
+		</script>
+	</body>
+</html>
