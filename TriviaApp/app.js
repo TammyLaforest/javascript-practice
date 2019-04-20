@@ -85,12 +85,17 @@ $(function() {
 		if (i == defaultQuestions.length) {
 			let button = document.createElement('button')
 			button.innerHTML = 'New Game'
+			button.style.margin = '1em'
 			endGame(points)
 			$(button).on('click', refreshPage)
 			// let joinedQuestions = questions.join(', ')
 			// console.log(joinedQuestions)
 			$('#options')
-				.html(button)
+				.html(
+					'<div class="row"><p><a href="addquestion.html">Contribute to question set!</a></p></div>'
+				)
+				.append(button)
+
 				.css('display', 'flex')
 				.css('justify-content', 'center')
 			$('#quiz')
