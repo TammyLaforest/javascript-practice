@@ -12,3 +12,5 @@ let server = http.createServer(requestHandler)
 server.listen(port, () => {
 	console.log(`Listening on port ${port}`)
 })
+
+app.use(express.statuc('public'))
