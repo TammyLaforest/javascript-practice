@@ -45,9 +45,7 @@ app.get('/quotes', (req, res) => {
 					res.send(err.message)
 				} else {
 					console.log(
-						`Return a list of quotes from the year: ${
-							req.query.year
-						}`
+						`Return a list of quotes from the year: ${req.query.year}`
 					)
 					res.json(rows)
 				}
@@ -67,14 +65,35 @@ app.get('/quotes', (req, res) => {
 	}
 })
 
-app.get('/quotes/:id', function(req, res) {
-	console.log(`Return quote with the ID: ${req.params.id}`)
-	res.send(`Return quote with the ID: ${req.params.id}`)
+app.get('/quotes/:id', function (req, res) {
+	db.all(
+		`SELECT * from Quotes WHERE rowid =${req.params.id}`,
+		(err, rows) => {
+			if (err) {
+				res.send(err.message)
+			} else {
+				console.log(
+					`Return quote with the ID: ${req.params.id}`
+				)
+				res.json(rows)
+			}
+		}
+	)
+
 })
 
 app.post('/quotes', (req, res) => {
 	console.log(`Insert a new quote: ${req.body.quote}`)
-	res.json(req.body)
+	db.run(`INSERT INTO Quotes VALUES (${req.body.quote}, ${req.body.author}, ${req.body.year})`, function (err) {
+		if (err) {
+			console.log(err.message);
+		}
+		else {
+			// Cannot use es6 function with this.lastID
+			res.send(`Inserted quote with id: ${this.lastID}`)
+		}
+	})
+
 })
 
 app.listen(port, () => {
