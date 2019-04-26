@@ -6,7 +6,9 @@
 
 let express = require('express')
 let bodyParser = require('body-parser')
+let sqlite3 = require('sqlite3')
 let app = express()
+let db = new sqlite3.Database('quotes.db')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 let quotes = [
@@ -35,9 +37,33 @@ let port = 3000
 app.get('/quotes', (req, res) => {
 	console.log('Get a list of all quotes as JSON')
 	if (req.query.year) {
-		res.send(`Return a list of quotes from the year ${req.query.year}`)
+		console.log('checking year')
+		db.all(
+			`SELECT * from Quotes WHERE year =${req.query.year}`,
+			(err, rows) => {
+				if (err) {
+					res.send(err.message)
+				} else {
+					console.log(
+						`Return a list of quotes from the year: ${
+							req.query.year
+						}`
+					)
+					res.json(rows)
+				}
+			}
+		)
 	} else {
-		res.json(quotes)
+		console.log('not checking for year')
+		db.all('SELECT * FROM Quotes', (err, rows) => {
+			if (err) {
+				console.log(err)
+				res.send(err.message)
+			} else {
+				console.log('We reached else')
+				res.json(rows)
+			}
+		})
 	}
 })
 
